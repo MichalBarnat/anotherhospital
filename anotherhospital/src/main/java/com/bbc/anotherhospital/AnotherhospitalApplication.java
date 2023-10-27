@@ -10,4 +10,7 @@ public class AnotherhospitalApplication {
 		SpringApplication.run(AnotherhospitalApplication.class, args);
 	}
 
+
+	// TODO 26.10.2023
+	//  zapoznajcie sie z roznicami miedzy JPA a JDBC. Sprobujcie uzyc NamedJdbcTemplate w repo.
 }

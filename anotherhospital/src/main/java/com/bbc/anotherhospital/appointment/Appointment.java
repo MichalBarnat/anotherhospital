@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Appointment {
-    Integer id;
-    Doctor doctor;
-    Patient patient;
-    LocalDateTime dateTime;
-    Double price;
+    private Integer id;
+    private Doctor doctor;
+    private Patient patient;
+    private LocalDateTime dateTime;
+    private Double price;
 }

@@ -1,16 +1,15 @@
-package com.bbc.anotherhospital.doctor;
+package com.bbc.anotherhospital.patient;
 
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public class DoctorSnapshot {
+public class PatientSnapshot {
     Integer id;
     String name;
     String surname;
-    String speciality;
     String email;
-    Integer rate;
     String pesel;
+    Boolean validInsurance;
 }

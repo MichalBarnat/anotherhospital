@@ -1,7 +1,5 @@
 package com.bbc.anotherhospital.doctor;
 
-import org.springframework.stereotype.Repository;
-
 public interface CreateDoctorCommandHandler {
     DoctorSnapshot handle(CreateDoctorCommand command);
 }

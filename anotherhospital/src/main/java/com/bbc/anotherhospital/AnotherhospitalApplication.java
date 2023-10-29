@@ -11,6 +11,6 @@ public class AnotherhospitalApplication {
 	}
 
 
-	// TODO 26.10.2023
+	// 26.10.2023
 	//  zapoznajcie sie z roznicami miedzy JPA a JDBC. Sprobujcie uzyc NamedJdbcTemplate w repo.
 }

@@ -10,24 +10,18 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AppointmentToAppointmentSnapshotConverter implements Converter<Appointment, AppointmentSnapshot> {
+
     @Override
     public AppointmentSnapshot convert(MappingContext<Appointment, AppointmentSnapshot> mappingContext) {
         Appointment appointment = mappingContext.getSource();
 
-//        return AppointmentSnapshot.builder()
-//                .id(appointment.getId())
-//                .doctorId(appointment.getDoctor().getId())
-//                .patientId(appointment.getPatient().getId())
-//                .dateTime(appointment.getDateTime())
-//                .price(appointment.getPrice())
-//                .build();
-
         return AppointmentSnapshot.builder()
                 .id(appointment.getId())
-                .doctorId(appointment.getDoctor() != null ? appointment.getDoctor().getId() : null)
-                .patientId(appointment.getPatient() != null ? appointment.getPatient().getId() : null)
+                .doctorId(appointment.getDoctor().getId())
+                .patientId(appointment.getPatient().getId())
                 .dateTime(appointment.getDateTime())
                 .price(appointment.getPrice())
                 .build();
     }
+
 }

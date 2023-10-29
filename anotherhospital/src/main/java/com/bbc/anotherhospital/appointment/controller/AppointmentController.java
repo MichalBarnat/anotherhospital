@@ -3,6 +3,7 @@ package com.bbc.anotherhospital.appointment.controller;
 import com.bbc.anotherhospital.appointment.Appointment;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
 import com.bbc.anotherhospital.appointment.handlers.CreateAppointmentCommandHandler;
+import com.bbc.anotherhospital.appointment.service.AppointmentCommandService;
 import com.bbc.anotherhospital.appointment.service.AppointmentQueryService;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,20 @@ public class AppointmentController {
 
     private final CreateAppointmentCommandHandler createAppointmentCommandHandler;
     private final AppointmentQueryService appointmentQueryService;
+    private final AppointmentCommandService appointmentCommandService;
     private final ModelMapper modelMapper;
+
+//    @PostMapping
+//    public ResponseEntity<AppointmentSnapshot> save(@RequestBody CreateAppointmentCommand command) {
+//        AppointmentSnapshot appointment = createAppointmentCommandHandler.handle(command);
+//        return new ResponseEntity<>(appointment, CREATED);
+//    }
 
     @PostMapping
     public ResponseEntity<AppointmentSnapshot> save(@RequestBody CreateAppointmentCommand command) {
-        AppointmentSnapshot appointment = createAppointmentCommandHandler.handle(command);
-        return new ResponseEntity<>(appointment, CREATED);
+        Appointment appointment = appointmentCommandService.createAppointment(command);
+
+        return new ResponseEntity<>(modelMapper.map(appointment, AppointmentSnapshot.class), CREATED);
     }
 
     @GetMapping("/{id}")

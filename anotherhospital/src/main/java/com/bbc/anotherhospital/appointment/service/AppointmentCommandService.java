@@ -4,11 +4,13 @@ import com.bbc.anotherhospital.appointment.Appointment;
 import com.bbc.anotherhospital.appointment.AppointmentFactory;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +20,8 @@ public class AppointmentCommandService {
     private final AppointmentFactory appointmentFactory;
     private final AppointmentQueryService appointmentQueryService;
 
-    public Appointment createAppointment(CreateAppointmentCommand command) {
 
+    public Integer createAppointment(CreateAppointmentCommand command) {
         Appointment newAppointment = appointmentFactory.createAppointment(
                 command.getDoctorId(),
                 command.getPatientId(),
@@ -27,17 +29,17 @@ public class AppointmentCommandService {
                 command.getPrice()
         );
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO appointment (doctor_id, patient_id, date_time, price) VALUES (:doctorId, :patientId, :dateTime, :price)";
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", newAppointment.getDoctor().getId());
-        params.put("patientId", newAppointment.getPatient().getId());
-        params.put("dateTime", newAppointment.getDateTime());
-        params.put("price", newAppointment.getPrice());
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("doctorId", newAppointment.getDoctor().getId())
+                .addValue("patientId", newAppointment.getPatient().getId())
+                .addValue("dateTime", newAppointment.getDateTime())
+                .addValue("price", newAppointment.getPrice());
 
-        jdbcTemplate.update(sql, params);
+        jdbcTemplate.update(sql, parameters, keyHolder, new String[] {"id"});
 
-
-        return newAppointment;
+        return keyHolder.getKey().intValue();
     }
 
 

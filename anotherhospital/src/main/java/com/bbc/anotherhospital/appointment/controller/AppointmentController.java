@@ -25,17 +25,13 @@ public class AppointmentController {
     private final AppointmentCommandService appointmentCommandService;
     private final ModelMapper modelMapper;
 
-//    @PostMapping
-//    public ResponseEntity<AppointmentSnapshot> save(@RequestBody CreateAppointmentCommand command) {
-//        AppointmentSnapshot appointment = createAppointmentCommandHandler.handle(command);
-//        return new ResponseEntity<>(appointment, CREATED);
-//    }
 
     @PostMapping
     public ResponseEntity<AppointmentSnapshot> save(@RequestBody CreateAppointmentCommand command) {
-        Appointment appointment = appointmentCommandService.createAppointment(command);
-
-        return new ResponseEntity<>(modelMapper.map(appointment, AppointmentSnapshot.class), CREATED);
+        Integer createdAppointmentId = appointmentCommandService.createAppointment(command);
+        Appointment createdAppointment = appointmentQueryService.findById(createdAppointmentId);
+        AppointmentSnapshot appointmentSnapshot = modelMapper.map(createdAppointment, AppointmentSnapshot.class);
+        return new ResponseEntity<>(appointmentSnapshot, CREATED);
     }
 
     @GetMapping("/{id}")

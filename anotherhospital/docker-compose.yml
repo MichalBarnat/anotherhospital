@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   postgres:
-    container_name: postgres_hospital
+    container_name: postgres_container
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -11,13 +11,13 @@ services:
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5431:5431"
+      - "5432:5432"
     networks:
       - postgres
     restart: unless-stopped
 
   pgadmin:
-    container_name: pgadmin_hospital
+    container_name: pgadmin_container
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}

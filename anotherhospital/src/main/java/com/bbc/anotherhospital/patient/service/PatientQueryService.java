@@ -1,7 +1,7 @@
 package com.bbc.anotherhospital.patient.service;
 
 import com.bbc.anotherhospital.patient.Patient;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -10,13 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PatientQueryService {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public PatientQueryService(NamedParameterJdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public Patient findById(Integer id) {
         String sql = "SELECT * FROM patient WHERE id = :id";
@@ -24,4 +21,5 @@ public class PatientQueryService {
         params.put("id", id);
         return jdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(Patient.class));
     }
+
 }

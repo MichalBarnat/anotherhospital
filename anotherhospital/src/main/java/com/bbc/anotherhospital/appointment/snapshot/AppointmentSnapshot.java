@@ -1,7 +1,6 @@
 package com.bbc.anotherhospital.appointment.snapshot;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
 import java.time.LocalDateTime;
 

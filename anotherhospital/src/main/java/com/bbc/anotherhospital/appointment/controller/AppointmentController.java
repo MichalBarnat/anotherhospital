@@ -6,8 +6,11 @@ import com.bbc.anotherhospital.appointment.handlers.CreateAppointmentCommandHand
 import com.bbc.anotherhospital.appointment.service.AppointmentQueryService;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -18,6 +21,7 @@ public class AppointmentController {
 
     private final CreateAppointmentCommandHandler createAppointmentCommandHandler;
     private final AppointmentQueryService appointmentQueryService;
+    private final ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<AppointmentSnapshot> save(@RequestBody CreateAppointmentCommand command) {
@@ -26,14 +30,17 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> getAppointmentById(@PathVariable Integer id) {
+    public ResponseEntity<AppointmentSnapshot> findById(@PathVariable Integer id) {
         Appointment appointment = appointmentQueryService.findById(id);
-        return ResponseEntity.ok(appointment);
+        return ResponseEntity.ok(modelMapper.map(appointment, AppointmentSnapshot.class));
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        String s = "test";
-        return ResponseEntity.ok(s);
+    @GetMapping
+    public ResponseEntity<List<AppointmentSnapshot>> findAll() {
+        List<AppointmentSnapshot> list = appointmentQueryService.findAll().stream()
+                .map(appointment -> modelMapper.map(appointment, AppointmentSnapshot.class))
+                .toList();
+        return ResponseEntity.ok(list);
     }
+
 }

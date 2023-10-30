@@ -19,10 +19,5 @@ class CreateAppointmentCommandHandlerImpl implements  CreateAppointmentCommandHa
     private final AppointmentRepository appointmentRepository;
     private final ModelMapper modelMapper;
 
-    @Override
-    public AppointmentSnapshot handle(CreateAppointmentCommand command) {
-        Appointment appointmentToSave = modelMapper.map(command, Appointment.class);
-        Appointment savedAppointment = appointmentRepository.save(appointmentToSave);
-        return modelMapper.map(savedAppointment, AppointmentSnapshot.class);
-    }
+
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Doctor {
-    private Integer id;
+    private Long id;
     private String name;
     private String surname;
     private String speciality;

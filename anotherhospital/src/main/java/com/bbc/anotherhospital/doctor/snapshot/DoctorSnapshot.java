@@ -1,4 +1,4 @@
-package com.bbc.anotherhospital.doctor;
+package com.bbc.anotherhospital.doctor.snapshot;
 
 import lombok.Builder;
 import lombok.Value;
@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class DoctorSnapshot {
-    Integer id;
+    Long id;
     String name;
     String surname;
     String speciality;

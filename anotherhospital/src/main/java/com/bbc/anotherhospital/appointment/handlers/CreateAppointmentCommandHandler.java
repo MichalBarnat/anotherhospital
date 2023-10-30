@@ -1,11 +1,9 @@
 package com.bbc.anotherhospital.appointment.handlers;
 
-import com.bbc.anotherhospital.appointment.Appointment;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
-import com.bbc.anotherhospital.appointment.repository.AppointmentRepository;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 public interface CreateAppointmentCommandHandler {
@@ -16,8 +14,10 @@ public interface CreateAppointmentCommandHandler {
 @RequiredArgsConstructor
 class CreateAppointmentCommandHandlerImpl implements  CreateAppointmentCommandHandler {
 
-    private final AppointmentRepository appointmentRepository;
-    private final ModelMapper modelMapper;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-
+    @Override
+    public AppointmentSnapshot handle(CreateAppointmentCommand command) {
+        return null;
+    }
 }

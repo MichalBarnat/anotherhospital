@@ -18,6 +18,6 @@ public class CreateAppointmentCommandToAppointmentConverter implements Converter
     public Appointment convert(MappingContext<CreateAppointmentCommand, Appointment> mappingContext) {
         CreateAppointmentCommand command = mappingContext.getSource();
 
-
+        return null;
     }
 }

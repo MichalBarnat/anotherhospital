@@ -1,4 +1,7 @@
-package com.bbc.anotherhospital.doctor;
+package com.bbc.anotherhospital.doctor.handlers;
+
+import com.bbc.anotherhospital.doctor.CreateDoctorCommand;
+import com.bbc.anotherhospital.doctor.snapshot.DoctorSnapshot;
 
 public interface CreateDoctorCommandHandler {
     DoctorSnapshot handle(CreateDoctorCommand command);

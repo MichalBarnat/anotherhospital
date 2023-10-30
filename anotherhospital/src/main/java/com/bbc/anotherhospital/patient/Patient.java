@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Patient {
-    private Integer id;
+    private Long id;
     private String name;
     private String surname;
     private String email;

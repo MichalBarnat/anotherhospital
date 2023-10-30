@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 @Value
 @Builder
 public class AppointmentSnapshot {
-    Integer id;
-    Integer doctorId;
-    Integer patientId;
+    Long id;
+    Long doctorId;
+    Long patientId;
     LocalDateTime dateTime;
     Double price;
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Appointment {
-    private Integer id;
+    @Id
+    private Long id;
     private Doctor doctor;
     private Patient patient;
     private LocalDateTime dateTime;

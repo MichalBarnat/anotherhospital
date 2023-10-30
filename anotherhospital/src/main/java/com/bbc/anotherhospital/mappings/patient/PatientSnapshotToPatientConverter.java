@@ -4,15 +4,13 @@ import com.bbc.anotherhospital.patient.Patient;
 import com.bbc.anotherhospital.patient.snapshot.PatientSnapshot;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
-import org.springframework.stereotype.Service;
 
-@Service
-public class PatientToPatientSnapshotConverter implements Converter<Patient, PatientSnapshot> {
+public class PatientSnapshotToPatientConverter implements Converter<PatientSnapshot, Patient> {
     @Override
-    public PatientSnapshot convert(MappingContext<Patient, PatientSnapshot> mappingContext) {
-        Patient patient = mappingContext.getSource();
+    public Patient convert(MappingContext<PatientSnapshot, Patient> mappingContext) {
+        PatientSnapshot patient = mappingContext.getSource();
 
-        return PatientSnapshot.builder()
+        return Patient.builder()
                 .id(patient.getId())
                 .name(patient.getName())
                 .surname(patient.getSurname())

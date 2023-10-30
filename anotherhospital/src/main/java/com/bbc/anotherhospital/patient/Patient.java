@@ -15,5 +15,5 @@ public class Patient {
     private String surname;
     private String email;
     private String pesel;
-    private boolean validInsurance;
+    private Boolean validInsurance;
 }

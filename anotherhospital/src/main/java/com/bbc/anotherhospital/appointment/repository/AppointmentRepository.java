@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -65,6 +66,35 @@ public class AppointmentRepository {
 
         return appointment;
     }
+
+    public List<Appointment> findAll() {
+        String sql = "SELECT * FROM appointment";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Appointment appointment = new Appointment();
+            appointment.setId(rs.getLong("id"));
+            appointment.setDateTime(rs.getObject("date_Time", LocalDateTime.class));
+            appointment.setPrice(rs.getDouble("price"));
+
+            Long doctorId = rs.getLong("doctor_id");
+            Long patientId = rs.getLong("patient_id");
+
+            DoctorSnapshot doctorSnapshot = findDoctorQueryHandler.handle(doctorId);
+            PatientSnapshot patientSnapshot = findPatientQueryHandler.handle(patientId);
+
+            appointment.setDoctor(modelMapper.map(doctorSnapshot, Doctor.class));
+            appointment.setPatient(modelMapper.map(patientSnapshot, Patient.class));
+
+            return appointment;
+        });
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM appointment WHERE id = :id";
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        jdbcTemplate.update(sql, params);
+    }
+
 
 
 }

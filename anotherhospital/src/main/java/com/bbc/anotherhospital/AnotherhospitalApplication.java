@@ -12,5 +12,8 @@ public class AnotherhospitalApplication {
 
 
 	// 26.10.2023
+	// Doctor - Krystian
+	// Patient - Mateusz
+	// Appointment - Michał
 	//  zapoznajcie sie z roznicami miedzy JPA a JDBC. Sprobujcie uzyc NamedJdbcTemplate w repo.
 }

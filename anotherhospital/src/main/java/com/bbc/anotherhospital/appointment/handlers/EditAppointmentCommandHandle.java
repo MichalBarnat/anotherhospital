@@ -1,26 +1,28 @@
 package com.bbc.anotherhospital.appointment.handlers;
 
 import com.bbc.anotherhospital.appointment.Appointment;
+import com.bbc.anotherhospital.appointment.commands.UpdateAppointmentCommand;
 import com.bbc.anotherhospital.appointment.repository.AppointmentRepository;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-public interface FindAppointmentQueryHandler {
-    AppointmentSnapshot handle(Long id);
+public interface EditAppointmentCommandHandle {
+    AppointmentSnapshot handle(Long id, UpdateAppointmentCommand command);
 }
 
 @Service
 @RequiredArgsConstructor
-class FindAppointmentQueryHandlerImpl implements FindAppointmentQueryHandler {
+class EditAppointmentCommandHandleImpl implements EditAppointmentCommandHandle {
 
     private final AppointmentRepository appointmentRepository;
     private final ModelMapper modelMapper;
 
+
     @Override
-    public AppointmentSnapshot handle(Long id) {
-        Appointment appointment = appointmentRepository.findById(id);
-        return modelMapper.map(appointment, AppointmentSnapshot.class);
+    public AppointmentSnapshot handle(Long id, UpdateAppointmentCommand command) {
+        Appointment editedAppointment = appointmentRepository.edit(id, command);
+        return modelMapper.map(editedAppointment, AppointmentSnapshot.class);
     }
 }

@@ -15,10 +15,21 @@ public class AppointmentToAppointmentSnapshotConverter implements Converter<Appo
     public AppointmentSnapshot convert(MappingContext<Appointment, AppointmentSnapshot> mappingContext) {
         Appointment appointment = mappingContext.getSource();
 
+        Long doctorId = null;
+        Long patientId = null;
+
+        if (appointment.getDoctor() != null) {
+            doctorId = appointment.getDoctor().getId();
+        }
+
+        if (appointment.getPatient() != null) {
+            patientId = appointment.getPatient().getId();
+        }
+
         return AppointmentSnapshot.builder()
                 .id(appointment.getId())
-                .doctorId(appointment.getDoctor() != null ? appointment.getDoctor().getId() : null)
-                .patientId(appointment.getPatient() != null ? appointment.getPatient().getId() : null)
+                .doctorId(doctorId)
+                .patientId(patientId)
                 .dateTime(appointment.getDateTime())
                 .price(appointment.getPrice())
                 .build();

@@ -1,4 +1,4 @@
-package com.bbc.anotherhospital.appointment;
+package com.bbc.anotherhospital.appointment.factory;
 
 import org.springframework.stereotype.Service;
 

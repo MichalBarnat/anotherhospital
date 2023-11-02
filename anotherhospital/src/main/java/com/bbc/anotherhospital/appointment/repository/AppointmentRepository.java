@@ -43,23 +43,6 @@ public class AppointmentRepository {
         this.modelMapper = modelMapper;
     }
 
-//    public Appointment save(CreateAppointmentCommand command) {
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        String sql = "INSERT INTO appointment (doctor_id, patient_id, date_time, price) VALUES (:doctorId, :patientId, :dateTime, :price)";
-//        MapSqlParameterSource params = new MapSqlParameterSource();
-//        params.addValue("doctorId", command.getDoctorId());
-//        params.addValue("patientId", command.getPatientId());
-//        params.addValue("dateTime", command.getDateTime());
-//        params.addValue("price", command.getPrice());
-//
-//        jdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
-//
-//        Long newAppointmentId = keyHolder.getKey().longValue();
-//
-//        return findById(newAppointmentId);
-//    }
-
     public Appointment save(CreateAppointmentCommand command) {
         if (appointmentIsAvailable(command)) {
             KeyHolder keyHolder = new GeneratedKeyHolder();

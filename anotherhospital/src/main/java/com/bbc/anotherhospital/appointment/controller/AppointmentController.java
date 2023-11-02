@@ -1,6 +1,7 @@
 package com.bbc.anotherhospital.appointment.controller;
 
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
+import com.bbc.anotherhospital.appointment.commands.CreateAppointmentPageCommand;
 import com.bbc.anotherhospital.appointment.commands.UpdateAppointmentCommand;
 import com.bbc.anotherhospital.appointment.handlers.*;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
@@ -46,9 +47,9 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentSnapshot>> getAllAppointments() {
-        List<AppointmentSnapshot> list = findAllAppointmentsQueryHandler.handle();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<List<AppointmentSnapshot>> findAll(CreateAppointmentPageCommand command) {
+        List<AppointmentSnapshot> appointments = findAllAppointmentsQueryHandler.handle(command);
+        return ResponseEntity.ok(appointments);
     }
 
     @DeleteMapping("/{id}")

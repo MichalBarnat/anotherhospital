@@ -1,5 +1,6 @@
 package com.bbc.anotherhospital.appointment.handlers;
 
+import com.bbc.anotherhospital.appointment.commands.CreateAppointmentPageCommand;
 import com.bbc.anotherhospital.appointment.repository.AppointmentRepository;
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface FindAllAppointmentsQueryHandler {
-    List<AppointmentSnapshot> handle();
+    List<AppointmentSnapshot> handle(CreateAppointmentPageCommand command);
 }
 
 @Service
@@ -21,8 +22,8 @@ class FindAllAppointmentsQueryHandlerIml implements FindAllAppointmentsQueryHand
     private final ModelMapper modelMapper;
 
     @Override
-    public List<AppointmentSnapshot> handle() {
-        return appointmentRepository.findAll().stream()
+    public List<AppointmentSnapshot> handle(CreateAppointmentPageCommand command) {
+        return appointmentRepository.findAll(command).stream()
                 .map(app -> modelMapper.map(app, AppointmentSnapshot.class))
                 .toList();
     }

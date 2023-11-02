@@ -2,6 +2,7 @@ package com.bbc.anotherhospital.appointment.repository;
 
 import com.bbc.anotherhospital.appointment.Appointment;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
+import com.bbc.anotherhospital.appointment.commands.CreateAppointmentPageCommand;
 import com.bbc.anotherhospital.appointment.commands.UpdateAppointmentCommand;
 import com.bbc.anotherhospital.doctor.Doctor;
 import com.bbc.anotherhospital.doctor.handlers.FindDoctorQueryHandler;
@@ -102,22 +103,33 @@ public class AppointmentRepository {
         return appointment;
     }
 
-    public List<Appointment> findAll() {
-        String sql = "SELECT * FROM appointment";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+    public List<Appointment> findAll(CreateAppointmentPageCommand command) {
+        int offset = command.getPageNumber() * command.getPageSize();
+        String sql = "SELECT * FROM appointment ORDER BY " + command.getSortBy() + " " + command.getSortDirection() +
+                " LIMIT :limit OFFSET :offset";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("limit", command.getPageSize());
+        params.put("offset", offset);
+
+        return jdbcTemplate.query(sql, params, (rs, rowNum) -> {
             Appointment appointment = new Appointment();
             appointment.setId(rs.getLong("id"));
-            appointment.setDateTime(rs.getObject("date_Time", LocalDateTime.class));
+            appointment.setDateTime(rs.getObject("date_time", LocalDateTime.class));
             appointment.setPrice(rs.getDouble("price"));
 
             Long doctorId = rs.getLong("doctor_id");
             Long patientId = rs.getLong("patient_id");
 
-            DoctorSnapshot doctorSnapshot = findDoctorQueryHandler.handle(doctorId);
-            PatientSnapshot patientSnapshot = findPatientQueryHandler.handle(patientId);
+            if (doctorId != null) {
+                DoctorSnapshot doctorSnapshot = findDoctorQueryHandler.handle(doctorId);
+                appointment.setDoctor(modelMapper.map(doctorSnapshot, Doctor.class));
+            }
 
-            appointment.setDoctor(modelMapper.map(doctorSnapshot, Doctor.class));
-            appointment.setPatient(modelMapper.map(patientSnapshot, Patient.class));
+            if (patientId != null) {
+                PatientSnapshot patientSnapshot = findPatientQueryHandler.handle(patientId);
+                appointment.setPatient(modelMapper.map(patientSnapshot, Patient.class));
+            }
 
             return appointment;
         });

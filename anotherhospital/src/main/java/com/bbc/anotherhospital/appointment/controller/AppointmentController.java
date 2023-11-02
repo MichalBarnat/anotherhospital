@@ -20,15 +20,17 @@ public class AppointmentController {
     private final FindAppointmentQueryHandler findAppointmentQueryHandler;
     private final FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler;
     private final DeleteByIdCommandHandler deleteByIdCommandHandler;
-    private final EditAppointmentCommandHandle editAppointmentCommandHandle;
+    private final EditAppointmentCommandHandler editAppointmentCommandHandle;
+    private final EditPartiallyCommandHandler editPartiallyCommandHandler;
 
     @Autowired
-    public AppointmentController(CreateAppointmentCommandHandler createAppointmentCommandHandler, FindAppointmentQueryHandler findAppointmentQueryHandler, FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler, DeleteByIdCommandHandler deleteByIdCommandHandler, EditAppointmentCommandHandle editAppointmentCommandHandle) {
+    public AppointmentController(CreateAppointmentCommandHandler createAppointmentCommandHandler, FindAppointmentQueryHandler findAppointmentQueryHandler, FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler, DeleteByIdCommandHandler deleteByIdCommandHandler, EditAppointmentCommandHandler editAppointmentCommandHandle, EditPartiallyCommandHandler editPartiallyCommandHandler) {
         this.createAppointmentCommandHandler = createAppointmentCommandHandler;
         this.findAppointmentQueryHandler = findAppointmentQueryHandler;
         this.findAllAppointmentsQueryHandler = findAllAppointmentsQueryHandler;
         this.deleteByIdCommandHandler = deleteByIdCommandHandler;
         this.editAppointmentCommandHandle = editAppointmentCommandHandle;
+        this.editPartiallyCommandHandler = editPartiallyCommandHandler;
     }
 
     @PostMapping
@@ -58,6 +60,12 @@ public class AppointmentController {
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentSnapshot> editAppointment(@PathVariable Long id, @RequestBody UpdateAppointmentCommand command) {
         AppointmentSnapshot appointment = editAppointmentCommandHandle.handle(id, command);
+        return ResponseEntity.ok(appointment);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AppointmentSnapshot> editPartially(@PathVariable Long id, @RequestBody UpdateAppointmentCommand command) {
+        AppointmentSnapshot appointment = editPartiallyCommandHandler.handler(id, command);
         return ResponseEntity.ok(appointment);
     }
 

@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class AppointmentRepository {
@@ -136,6 +137,26 @@ public class AppointmentRepository {
         params.addValue("patientId", command.getPatientId());
         params.addValue("dateTime", command.getDateTime());
         params.addValue("price", command.getPrice());
+
+        jdbcTemplate.update(sql, params);
+
+        return findById(id);
+    }
+
+    public Appointment editPartially(Long id, UpdateAppointmentCommand command) {
+        Appointment currentAppointment = findById(id);
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+
+        params.addValue("doctorId", command.getDoctorId() != null ? command.getDoctorId() : currentAppointment.getDoctor() != null ? currentAppointment.getDoctor().getId() : null);
+
+        params.addValue("patientId", command.getPatientId() != null ? command.getPatientId() : currentAppointment.getPatient() != null ? currentAppointment.getPatient().getId() : null);
+
+        params.addValue("dateTime", Optional.ofNullable(command.getDateTime()).orElse(currentAppointment.getDateTime()));
+        params.addValue("price", Optional.ofNullable(command.getPrice()).orElse(currentAppointment.getPrice()));
+
+        String sql = "UPDATE appointment SET doctor_id = :doctorId, patient_id = :patientId, date_time = :dateTime, price = :price WHERE id = :id";
 
         jdbcTemplate.update(sql, params);
 

@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-public interface EditAppointmentCommandHandle {
+public interface EditAppointmentCommandHandler {
     AppointmentSnapshot handle(Long id, UpdateAppointmentCommand command);
 }
 
 @Service
 @RequiredArgsConstructor
-class EditAppointmentCommandHandleImpl implements EditAppointmentCommandHandle {
+class EditAppointmentCommandHandlerImpl implements EditAppointmentCommandHandler {
 
     private final AppointmentRepository appointmentRepository;
     private final ModelMapper modelMapper;

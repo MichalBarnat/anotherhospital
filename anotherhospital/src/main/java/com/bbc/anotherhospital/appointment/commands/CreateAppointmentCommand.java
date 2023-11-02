@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAppointmentCommand {
-    private Integer doctorId;
-    private Integer patientId;
+    private Long doctorId;
+    private Long patientId;
     private LocalDateTime dateTime;
     private Double price;
 }

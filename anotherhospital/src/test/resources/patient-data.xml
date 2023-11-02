@@ -1,0 +1,3 @@
+<dataset>
+    <patient id="1" name="Jan" surname="Kowalski" email="jan.kowalski@example.com" pesel="12345678901" validInsurance="true"/>
+</dataset>

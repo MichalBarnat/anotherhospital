@@ -23,6 +23,7 @@ public class PatientRepository {
         String sql = "SELECT * FROM patient WHERE id = :id";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
+        // TODO wyniesc do handlera
         try {
             return jdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(Patient.class));
         } catch (EmptyResultDataAccessException e) {

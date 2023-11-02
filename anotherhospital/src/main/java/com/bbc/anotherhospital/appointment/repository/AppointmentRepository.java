@@ -193,6 +193,7 @@ public class AppointmentRepository {
         return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(Appointment.class));
     }
 
+    // TODO przeniesc do CreateAppointmentCommandHandler
     public boolean appointmentIsAvailable(CreateAppointmentCommand command) {
         LocalDateTime proposedDateTime = command.getDateTime();
         LocalDateTime proposedEndDateTime = proposedDateTime.plusMinutes(15);

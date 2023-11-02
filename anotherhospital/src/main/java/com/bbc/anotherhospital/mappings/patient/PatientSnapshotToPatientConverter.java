@@ -4,7 +4,9 @@ import com.bbc.anotherhospital.patient.Patient;
 import com.bbc.anotherhospital.patient.snapshot.PatientSnapshot;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PatientSnapshotToPatientConverter implements Converter<PatientSnapshot, Patient> {
     @Override
     public Patient convert(MappingContext<PatientSnapshot, Patient> mappingContext) {

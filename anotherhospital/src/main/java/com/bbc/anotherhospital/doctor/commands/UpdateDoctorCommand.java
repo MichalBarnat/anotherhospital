@@ -1,16 +1,13 @@
-package com.bbc.anotherhospital.doctor;
+package com.bbc.anotherhospital.doctor.commands;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Doctor {
-    private Long id;
+public class UpdateDoctorCommand {
     private String name;
     private String surname;
     private String speciality;

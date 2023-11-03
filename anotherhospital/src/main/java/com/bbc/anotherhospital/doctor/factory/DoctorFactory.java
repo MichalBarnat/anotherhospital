@@ -1,5 +1,7 @@
-package com.bbc.anotherhospital.doctor;
+package com.bbc.anotherhospital.doctor.factory;
 
+import com.bbc.anotherhospital.doctor.Doctor;
+import com.bbc.anotherhospital.doctor.commands.CreateDoctorCommand;
 import com.bbc.anotherhospital.doctor.snapshot.DoctorSnapshot;
 
 public class DoctorFactory {

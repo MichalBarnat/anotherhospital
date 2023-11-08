@@ -2,16 +2,15 @@ package com.bbc.anotherhospital.appointment.handlers;
 
 import com.bbc.anotherhospital.appointment.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-public interface DeleteByIdCommandHandler {
+public interface DeleteAppointmentByIdCommandHandler {
     void handle(Long id);
 }
 
 @Service
 @RequiredArgsConstructor
-class DeleteByIdCommandHandlerImpl implements DeleteByIdCommandHandler {
+class DeleteAppointmentByIdCommandHandlerImpl implements DeleteAppointmentByIdCommandHandler {
 
     private final AppointmentRepository appointmentRepository;
 

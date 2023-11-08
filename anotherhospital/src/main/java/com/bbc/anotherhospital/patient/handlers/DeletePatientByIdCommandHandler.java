@@ -4,13 +4,13 @@ import com.bbc.anotherhospital.patient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-public interface DeleteByIdCommandHandler {
+public interface DeletePatientByIdCommandHandler {
     void handle(Long id);
 }
 
 @Service
 @RequiredArgsConstructor
-class DeleteByIdCommandHandlerImpl implements DeleteByIdCommandHandler {
+class DeletePatientByIdCommandHandlerImpl implements DeletePatientByIdCommandHandler {
     private final PatientRepository patientRepository;
 
     @Override

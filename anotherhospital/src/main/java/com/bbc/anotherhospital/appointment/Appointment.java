@@ -2,17 +2,14 @@ package com.bbc.anotherhospital.appointment;
 
 import com.bbc.anotherhospital.doctor.Doctor;
 import com.bbc.anotherhospital.patient.Patient;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class Appointment {
     @Id

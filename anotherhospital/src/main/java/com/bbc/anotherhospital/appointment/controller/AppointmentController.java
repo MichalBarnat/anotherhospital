@@ -20,16 +20,16 @@ public class AppointmentController {
     private final CreateAppointmentCommandHandler createAppointmentCommandHandler;
     private final FindAppointmentQueryHandler findAppointmentQueryHandler;
     private final FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler;
-    private final DeleteByIdCommandHandler deleteByIdCommandHandler;
+    private final DeleteAppointmentByIdCommandHandler deleteAppointmentByIdCommandHandler;
     private final EditAppointmentCommandHandler editAppointmentCommandHandle;
     private final EditPartiallyCommandHandler editPartiallyCommandHandler;
 
     @Autowired
-    public AppointmentController(CreateAppointmentCommandHandler createAppointmentCommandHandler, FindAppointmentQueryHandler findAppointmentQueryHandler, FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler, DeleteByIdCommandHandler deleteByIdCommandHandler, EditAppointmentCommandHandler editAppointmentCommandHandle, EditPartiallyCommandHandler editPartiallyCommandHandler) {
+    public AppointmentController(CreateAppointmentCommandHandler createAppointmentCommandHandler, FindAppointmentQueryHandler findAppointmentQueryHandler, FindAllAppointmentsQueryHandler findAllAppointmentsQueryHandler, DeleteAppointmentByIdCommandHandler deleteAppointmentByIdCommandHandler, EditAppointmentCommandHandler editAppointmentCommandHandle, EditPartiallyCommandHandler editPartiallyCommandHandler) {
         this.createAppointmentCommandHandler = createAppointmentCommandHandler;
         this.findAppointmentQueryHandler = findAppointmentQueryHandler;
         this.findAllAppointmentsQueryHandler = findAllAppointmentsQueryHandler;
-        this.deleteByIdCommandHandler = deleteByIdCommandHandler;
+        this.deleteAppointmentByIdCommandHandler = deleteAppointmentByIdCommandHandler;
         this.editAppointmentCommandHandle = editAppointmentCommandHandle;
         this.editPartiallyCommandHandler = editPartiallyCommandHandler;
     }
@@ -54,7 +54,7 @@ public class AppointmentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        deleteByIdCommandHandler.handle(id);
+        deleteAppointmentByIdCommandHandler.handle(id);
         return ResponseEntity.noContent().build();
     }
 

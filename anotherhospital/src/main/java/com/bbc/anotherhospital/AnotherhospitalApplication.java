@@ -17,7 +17,7 @@ public class AnotherhospitalApplication {
 	// Appointment - Michał
 	//  zapoznajcie sie z roznicami miedzy JPA a JDBC. Sprobujcie uzyc NamedJdbcTemplate w repo.
 
-	// TODO 02.11
+	// 02.11
 	// factory i zabezpieczenie encji przed tworzeniem za pomoca prywatnych konstruktorow
 	// dokonczyc globalexceptionhandler
 	// wyniesc czesc logiki z repo appointment do handlera

@@ -1,6 +1,7 @@
 package com.bbc.anotherhospital.appointment.repository;
 
 import com.bbc.anotherhospital.appointment.Appointment;
+import com.bbc.anotherhospital.appointment.AppointmentFactory;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand;
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentPageCommand;
 import com.bbc.anotherhospital.appointment.commands.UpdateAppointmentCommand;
@@ -71,7 +72,7 @@ public class AppointmentRepository {
         Appointment appointment;
         try {
             appointment = jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-                Appointment appt = new Appointment();
+                Appointment appt = AppointmentFactory.createAppointment();
                 appt.setId(rs.getLong("id"));
                 appt.setDateTime(rs.getObject("date_time", LocalDateTime.class));
                 appt.setPrice(rs.getDouble("price"));
@@ -113,7 +114,7 @@ public class AppointmentRepository {
         params.put("offset", offset);
 
         return jdbcTemplate.query(sql, params, (rs, rowNum) -> {
-            Appointment appointment = new Appointment();
+            Appointment appointment = AppointmentFactory.createAppointment();
             appointment.setId(rs.getLong("id"));
             appointment.setDateTime(rs.getObject("date_time", LocalDateTime.class));
             appointment.setPrice(rs.getDouble("price"));

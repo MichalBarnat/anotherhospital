@@ -1,6 +1,7 @@
 package com.bbc.anotherhospital.mappings.doctor;
 
 import com.bbc.anotherhospital.doctor.Doctor;
+import com.bbc.anotherhospital.doctor.DoctorFactory;
 import com.bbc.anotherhospital.doctor.snapshot.DoctorSnapshot;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
@@ -12,14 +13,16 @@ public class DoctorSnapshotToDoctorConverter implements Converter<DoctorSnapshot
     public Doctor convert(MappingContext<DoctorSnapshot, Doctor> mappingContext) {
         DoctorSnapshot doctor = mappingContext.getSource();
 
-        return Doctor.builder()
-                .id(doctor.getId())
-                .name(doctor.getName())
-                .surname(doctor.getSurname())
-                .speciality(doctor.getSpeciality())
-                .email(doctor.getEmail())
-                .rate(doctor.getRate())
-                .pesel(doctor.getPesel())
-                .build();
+        Doctor createdDoctor = DoctorFactory.createDoctor();
+        createdDoctor.setId(doctor.getId());
+        createdDoctor.setName(doctor.getName());
+        createdDoctor.setSurname(doctor.getSurname());
+        createdDoctor.setSpeciality(doctor.getSpeciality());
+        createdDoctor.setEmail(doctor.getEmail());
+        createdDoctor.setRate(doctor.getRate());
+        createdDoctor.setPesel(doctor.getPesel());
+
+        return createdDoctor;
     }
+
 }

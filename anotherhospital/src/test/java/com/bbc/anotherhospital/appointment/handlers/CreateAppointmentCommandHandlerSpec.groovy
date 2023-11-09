@@ -5,9 +5,11 @@ import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand
 import com.bbc.anotherhospital.appointment.repository.AppointmentRepository
 import com.bbc.anotherhospital.appointment.snapshot.AppointmentSnapshot
 import com.bbc.anotherhospital.doctor.Doctor
+import com.bbc.anotherhospital.doctor.DoctorFactory
 import com.bbc.anotherhospital.patient.Patient
 import com.bbc.anotherhospital.appointment.AppointmentFactory
 import com.bbc.anotherhospital.exceptions.AppointmentIsNotAvailableException
+import com.bbc.anotherhospital.patient.PatientFactory
 import org.modelmapper.ModelMapper
 import spock.lang.Specification
 
@@ -37,7 +39,7 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         when:
         appointmentRepository.findAllByDoctorId(_) >> []
         appointmentRepository.findAllByPatientId(_) >> []
-        appointmentRepository.save(_) >> AppointmentFactory.createAppointment(1L, new Doctor(), new Patient(), command.dateTime, command.price)
+        appointmentRepository.save(_) >> AppointmentFactory.createAppointment(1L, DoctorFactory.createDoctor(), PatientFactory.createPatient(), command.dateTime, command.price)
         modelMapper.map(_, AppointmentSnapshot) >> AppointmentSnapshot.builder()
                 .id(1L)
                 .doctorId(command.getDoctorId())
@@ -55,8 +57,10 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
 
     def "should throw exception when appointment is not available"() {
         given:
-        CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.parse("2042-10-01T20:57:03.93"), price: 100.0)
-        Appointment conflictingAppointment = AppointmentFactory.createAppointment(2L, new Doctor(1L, "DoctorName", "DoctorSurname", "Speciality", "doctor@example.com", 5, "12345678901", true), new Patient(1L, "PatientName", "PatientSurname", "patient@example.com", "12345678901", true), command.dateTime, 200.0)
+        Doctor doctor = DoctorFactory.createDoctor(1L, "DoctorName", "DoctorSurname", "Speciality", "doctor@example.com", 5, "12345678901", true)
+        Patient patient = PatientFactory.createPatient(1L, "PatientName", "PatientSurname", "patient@example.com", "12345678901", true)
+        CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: doctor.id, patientId: patient.id, dateTime: LocalDateTime.parse("2042-10-01T20:57:03.93"), price: 100.0)
+        Appointment conflictingAppointment = AppointmentFactory.createAppointment(2L, doctor, patient, command.dateTime, 200.0)
         List<Appointment> conflictingAppointments = [conflictingAppointment]
 
         when:
@@ -67,5 +71,6 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         then:
         thrown(AppointmentIsNotAvailableException)
     }
+
 
 }

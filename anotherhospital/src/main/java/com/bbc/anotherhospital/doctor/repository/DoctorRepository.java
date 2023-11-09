@@ -1,6 +1,7 @@
 package com.bbc.anotherhospital.doctor.repository;
 
 import com.bbc.anotherhospital.doctor.Doctor;
+import com.bbc.anotherhospital.doctor.DoctorFactory;
 import com.bbc.anotherhospital.doctor.commands.CreateDoctorCommand;
 import com.bbc.anotherhospital.doctor.commands.UpdateDoctorCommand;
 import com.bbc.anotherhospital.exceptions.DoctorNotFoundException;
@@ -47,7 +48,7 @@ public class DoctorRepository {
     public List<Doctor> findAll() {
         String sql = "SELECT * FROM doctor";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Doctor doctor = new Doctor();
+            Doctor doctor = DoctorFactory.createDoctor();
             doctor.setId(rs.getLong("id"));
             doctor.setName(rs.getString("name"));
             doctor.setSurname(rs.getString("surname"));

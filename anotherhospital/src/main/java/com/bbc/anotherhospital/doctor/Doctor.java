@@ -1,14 +1,11 @@
 package com.bbc.anotherhospital.doctor;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder(access = AccessLevel.PACKAGE)
 public class Doctor {
     private Long id;
     private String name;

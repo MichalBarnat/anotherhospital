@@ -2,6 +2,7 @@ package com.bbc.anotherhospital.patient.repository;
 
 import com.bbc.anotherhospital.exceptions.PatientNotFoundException;
 import com.bbc.anotherhospital.patient.Patient;
+import com.bbc.anotherhospital.patient.PatientFactory;
 import com.bbc.anotherhospital.patient.commands.CreatePatientCommand;
 import com.bbc.anotherhospital.patient.commands.UpdatePatientCommand;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,7 +48,7 @@ public class PatientRepository {
     public List<Patient> findAll() {
         String sql = "SELECT * FROM patient";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Patient patient = new Patient();
+            Patient patient = PatientFactory.createPatient();
             patient.setId(rs.getLong("id"));
             patient.setName(rs.getString("name"));
             patient.setSurname(rs.getString("surname"));

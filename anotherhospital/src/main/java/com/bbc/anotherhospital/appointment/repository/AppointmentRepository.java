@@ -145,7 +145,6 @@ public class AppointmentRepository {
     }
 
     public Appointment edit(Long id, UpdateAppointmentCommand command) {
-        Appointment currentAppointment = findById(id);
 
         String sql = "UPDATE appointment SET doctor_id = :doctorId, patient_id = :patientId, date_time = :dateTime, price = :price WHERE id = :id";
 

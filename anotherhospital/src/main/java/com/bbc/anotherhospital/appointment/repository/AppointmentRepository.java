@@ -8,8 +8,8 @@ import com.bbc.anotherhospital.appointment.commands.UpdateAppointmentCommand;
 import com.bbc.anotherhospital.doctor.Doctor;
 import com.bbc.anotherhospital.doctor.handlers.FindDoctorQueryHandler;
 import com.bbc.anotherhospital.doctor.snapshot.DoctorSnapshot;
-import com.bbc.anotherhospital.exceptions.AppointmentIsNotAvailableException;
 import com.bbc.anotherhospital.exceptions.AppointmentNotFoundException;
+import com.bbc.anotherhospital.exceptions.NoGeneratedKeyException;
 import com.bbc.anotherhospital.patient.Patient;
 import com.bbc.anotherhospital.patient.handlers.FindPatientQueryHandler;
 import com.bbc.anotherhospital.patient.snapshot.PatientSnapshot;
@@ -46,22 +46,23 @@ public class AppointmentRepository {
     }
 
     public Appointment save(CreateAppointmentCommand command) {
-        if (appointmentIsAvailable(command)) {
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            String sql = "INSERT INTO appointment (doctor_id, patient_id, date_time, price) VALUES (:doctorId, :patientId, :dateTime, :price)";
-            MapSqlParameterSource params = new MapSqlParameterSource();
-            params.addValue("doctorId", command.getDoctorId());
-            params.addValue("patientId", command.getPatientId());
-            params.addValue("dateTime", command.getDateTime());
-            params.addValue("price", command.getPrice());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO appointment (doctor_id, patient_id, date_time, price) VALUES (:doctorId, :patientId, :dateTime, :price)";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("doctorId", command.getDoctorId());
+        params.addValue("patientId", command.getPatientId());
+        params.addValue("dateTime", command.getDateTime());
+        params.addValue("price", command.getPrice());
 
-            jdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
+        jdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
 
-            Long newAppointmentId = keyHolder.getKey().longValue();
-            return findById(newAppointmentId);
-        } else {
-            throw new AppointmentIsNotAvailableException("Appointment is not available at: " + command.getDateTime());
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new NoGeneratedKeyException("Failed to insert appointment, no ID obtained.");
         }
+
+        Long newAppointmentId = keyHolder.getKey().longValue();
+        return findById(newAppointmentId);
     }
 
     public Appointment findById(Long id) {
@@ -166,11 +167,20 @@ public class AppointmentRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
 
-        params.addValue("doctorId", command.getDoctorId() != null ? command.getDoctorId() : currentAppointment.getDoctor() != null ? currentAppointment.getDoctor().getId() : null);
+        Long doctorId = command.getDoctorId();
+        if(doctorId == null && currentAppointment.getDoctor() != null) {
+            doctorId = currentAppointment.getDoctor().getId();
+        }
+        params.addValue("doctorId", doctorId);
 
-        params.addValue("patientId", command.getPatientId() != null ? command.getPatientId() : currentAppointment.getPatient() != null ? currentAppointment.getPatient().getId() : null);
+        Long patientId = command.getPatientId();
+        if(patientId == null && currentAppointment.getPatient() != null) {
+            patientId = currentAppointment.getPatient().getId();
+        }
+        params.addValue("patientId", patientId);
 
         params.addValue("dateTime", Optional.ofNullable(command.getDateTime()).orElse(currentAppointment.getDateTime()));
+
         params.addValue("price", Optional.ofNullable(command.getPrice()).orElse(currentAppointment.getPrice()));
 
         String sql = "UPDATE appointment SET doctor_id = :doctorId, patient_id = :patientId, date_time = :dateTime, price = :price WHERE id = :id";
@@ -192,31 +202,6 @@ public class AppointmentRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("patientId", patientId);
         return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(Appointment.class));
-    }
-
-    // TODO przeniesc do CreateAppointmentCommandHandler
-    public boolean appointmentIsAvailable(CreateAppointmentCommand command) {
-        LocalDateTime proposedDateTime = command.getDateTime();
-        LocalDateTime proposedEndDateTime = proposedDateTime.plusMinutes(15);
-
-        List<Appointment> doctorAppointments = findAllByDoctorId(command.getDoctorId());
-        List<Appointment> patientAppointments = findAllByPatientId(command.getPatientId());
-
-        boolean doctorTimeValidation = doctorAppointments.stream()
-                .anyMatch(appointment -> {
-                    LocalDateTime appointmentStart = appointment.getDateTime();
-                    LocalDateTime appointmentEnd = appointmentStart.plusMinutes(15);
-                    return (proposedDateTime.isBefore(appointmentEnd) && proposedEndDateTime.isAfter(appointmentStart));
-                });
-
-        boolean patientTimeValidation = patientAppointments.stream()
-                .anyMatch(appointment -> {
-                    LocalDateTime appointmentStart = appointment.getDateTime();
-                    LocalDateTime appointmentEnd = appointmentStart.plusMinutes(15);
-                    return (proposedDateTime.isBefore(appointmentEnd) && proposedEndDateTime.isAfter(appointmentStart));
-                });
-
-        return !doctorTimeValidation && !patientTimeValidation;
     }
 
 }

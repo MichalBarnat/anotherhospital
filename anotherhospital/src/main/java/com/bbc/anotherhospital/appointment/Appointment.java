@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
+@Builder(access = AccessLevel.PACKAGE)
 public class Appointment {
     @Id
     private Long id;

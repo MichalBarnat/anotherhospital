@@ -32,7 +32,33 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         createAppointmentCommandHandler = new CreateAppointmentCommandHandlerImpl(appointmentRepository, modelMapper)
     }
 
-    def "should create appointment when appointment is available"() {
+    def "should create appointment when available"() {
+        given:
+        CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.parse("2024-12-08T16:20:00.00"), price: 100.0)
+        Doctor doctor = DoctorFactory.createDoctor(1L, "DoctorName", "DoctorSurname", "Speciality", "doctor@example.com", 5, "12345678901", true)
+        Patient patient = PatientFactory.createPatient(1L, "PatientName", "PatientSurname", "patient@example.com", "12345678901", true)
+        Appointment savedAppointment = AppointmentFactory.createAppointment(1L, doctor, patient, LocalDateTime.parse("2024-12-08T16:20:00.00"), 100.0);
+        AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
+                .id(savedAppointment.getId())
+                .doctorId(savedAppointment.getDoctor().getId())
+                .patientId(savedAppointment.getPatient().getId())
+                .dateTime(savedAppointment.getDateTime())
+                .price(savedAppointment.getPrice())
+                .build();
+
+        appointmentRepository.findAllByDoctorId(command.getDoctorId()) >> Collections.emptyList()
+        appointmentRepository.findAllByPatientId(command.getPatientId()) >> Collections.emptyList()
+        appointmentRepository.save(command) >> savedAppointment
+        modelMapper.map(savedAppointment, AppointmentSnapshot.class) >> expectedSnapshot
+
+        when:
+        AppointmentSnapshot actualSnapshot = createAppointmentCommandHandler.handle(command)
+
+        then:
+        actualSnapshot == expectedSnapshot
+    }
+
+    def "should create appointment when available v2"() {
         given:
         CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.now(), price: 100.0)
 
@@ -49,10 +75,11 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
                 .build()
         AppointmentSnapshot result = createAppointmentCommandHandler.handle(command)
 
-        then: "an appointment is created"
-        assert result.id == 1;
+        then:
+        assert result.id == 1L
         assert result.doctorId == command.doctorId
         assert result.patientId == command.patientId
+        assert result.price == command.getPrice()
     }
 
     def "should throw exception when appointment is not available"() {
@@ -71,6 +98,5 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         then:
         thrown(AppointmentIsNotAvailableException)
     }
-
 
 }

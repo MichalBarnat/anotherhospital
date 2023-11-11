@@ -27,7 +27,7 @@ class FindAppointmentQueryHandlerSpec extends Specification {
 
         when:
         appointmentRepository.findById(appointment.getId()) >> appointment
-        modelMapper.map(_, AppointmentSnapshot) >> appointmentSnapshot
+        modelMapper.map(appointment, AppointmentSnapshot) >> appointmentSnapshot
         AppointmentSnapshot foundAppointment = findAppointmentQueryHandler.handle(appointment.getId());
 
         then:
@@ -44,6 +44,8 @@ class FindAppointmentQueryHandlerSpec extends Specification {
         findAppointmentQueryHandler.handle(nonExistingAppointmentId)
 
         then:
+        // razem z tym wywala blad i na odwrot tak samo :/
+        //1 * appointmentRepository.findById(69L)
         thrown(AppointmentNotFoundException)
     }
 

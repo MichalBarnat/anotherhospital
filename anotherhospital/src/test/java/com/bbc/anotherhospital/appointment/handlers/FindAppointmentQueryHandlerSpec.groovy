@@ -14,28 +14,49 @@ class FindAppointmentQueryHandlerSpec extends Specification {
     ModelMapper modelMapper = Mock(ModelMapper)
     FindAppointmentQueryHandlerImpl findAppointmentQueryHandler = new FindAppointmentQueryHandlerImpl(appointmentRepository, modelMapper);
 
-    def "should find appointment by id when exist"() {
+    def "should find appointment by id when exist state verification"() {
         given:
         Appointment appointment = AppointmentFactory.createAppointment()
         appointment.setId(1L)
         appointment.setPrice(200.5)
 
-        AppointmentSnapshot appointmentSnapshot = AppointmentSnapshot.builder()
+        AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
                 .id(appointment.getId())
                 .price(appointment.getPrice())
                 .build();
 
         when:
         appointmentRepository.findById(appointment.getId()) >> appointment
-        modelMapper.map(appointment, AppointmentSnapshot) >> appointmentSnapshot
-        AppointmentSnapshot foundAppointment = findAppointmentQueryHandler.handle(appointment.getId());
+        modelMapper.map(appointment, AppointmentSnapshot) >> expectedSnapshot
+        AppointmentSnapshot foundAppointment = findAppointmentQueryHandler.handle(appointment.getId())
 
         then:
-        foundAppointment.id == 1L
-        foundAppointment.price == 200.5
+        foundAppointment == expectedSnapshot
     }
 
-    def "should throw AppointmentNotFoundException when appointment do not exist" () {
+    def "should find appointment by id when exist behavior verification"() {
+        given:
+        Appointment appointment = AppointmentFactory.createAppointment()
+        appointment.setId(1L)
+        appointment.setPrice(200.5)
+
+        AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
+                .id(appointment.getId())
+                .price(appointment.getPrice())
+                .build();
+
+        when:
+        appointmentRepository.findById(appointment.getId()) >> appointment
+        modelMapper.map(appointment, AppointmentSnapshot) >> expectedSnapshot
+        AppointmentSnapshot foundAppointment = findAppointmentQueryHandler.handle(appointment.getId())
+
+        then:
+        1 * appointmentRepository.findById(1L)
+        //dlaczego z wildcardem dziala a z appointment juz nie ???
+        1 * modelMapper.map(_, AppointmentSnapshot)
+    }
+
+    def "should throw AppointmentNotFoundException when appointment do not exist state verification" () {
         given:
         long nonExistingAppointmentId = 69L
 
@@ -44,10 +65,32 @@ class FindAppointmentQueryHandlerSpec extends Specification {
         findAppointmentQueryHandler.handle(nonExistingAppointmentId)
 
         then:
-        // razem z tym wywala blad i na odwrot tak samo :/
-        //1 * appointmentRepository.findById(69L)
         thrown(AppointmentNotFoundException)
     }
 
+    def "should throw AppointmentNotFoundException when appointment do not exist behavior verification" () {
+        given:
+        long nonExistingAppointmentId = 69L
+
+        when:
+        appointmentRepository.findById(nonExistingAppointmentId) >> { throw new AppointmentNotFoundException("Appointment with id " + nonExistingAppointmentId + " not found") }
+        findAppointmentQueryHandler.handle(nonExistingAppointmentId)
+
+        then:
+        1 * appointmentRepository.findById(69L)
+    }
+
+    def "should throw AppointmentNotFoundException when appointment do not exist ERROR" () {
+        given:
+        long nonExistingAppointmentId = 69L
+
+        when:
+        appointmentRepository.findById(nonExistingAppointmentId) >> { throw new AppointmentNotFoundException("Appointment with id " + nonExistingAppointmentId + " not found") }
+        findAppointmentQueryHandler.handle(nonExistingAppointmentId)
+
+        then:
+        1 * appointmentRepository.findById(69L)
+        thrown(AppointmentNotFoundException)
+    }
 
 }

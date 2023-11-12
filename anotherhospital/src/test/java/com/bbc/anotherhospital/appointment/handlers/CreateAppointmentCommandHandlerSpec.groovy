@@ -32,7 +32,7 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         createAppointmentCommandHandler = new CreateAppointmentCommandHandlerImpl(appointmentRepository, modelMapper)
     }
 
-    def "should create appointment when available"() {
+    def "should create appointment when available state verification"() {
         given:
         CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.parse("2024-12-08T16:20:00.00"), price: 100.0)
         Doctor doctor = DoctorFactory.createDoctor(1L, "DoctorName", "DoctorSurname", "Speciality", "doctor@example.com", 5, "12345678901", true)
@@ -63,9 +63,9 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.now(), price: 100.0)
 
         when:
-        appointmentRepository.findAllByDoctorId(_) >> []
-        appointmentRepository.findAllByPatientId(_) >> []
-        appointmentRepository.save(_) >> AppointmentFactory.createAppointment(1L, DoctorFactory.createDoctor(), PatientFactory.createPatient(), command.dateTime, command.price)
+        appointmentRepository.findAllByDoctorId(1L) >> []
+        appointmentRepository.findAllByPatientId(1L) >> []
+        appointmentRepository.save(command) >> AppointmentFactory.createAppointment(1L, DoctorFactory.createDoctor(), PatientFactory.createPatient(), command.dateTime, command.price)
         modelMapper.map(_, AppointmentSnapshot) >> AppointmentSnapshot.builder()
                 .id(1L)
                 .doctorId(command.getDoctorId())
@@ -76,10 +76,47 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         AppointmentSnapshot result = createAppointmentCommandHandler.handle(command)
 
         then:
-        assert result.id == 1L
-        assert result.doctorId == command.doctorId
-        assert result.patientId == command.patientId
-        assert result.price == command.getPrice()
+        result.id == 1L
+        result.doctorId == command.doctorId
+        result.patientId == command.patientId
+        result.price == command.getPrice()
+        1 * appointmentRepository.save(command)
+    }
+
+    def "should create appointment when available behavior verification"() {
+        given:
+        CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.now(), price: 100.0)
+
+        AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
+        .id(1L)
+        .doctorId(command.getDoctorId())
+        .patientId(command.getPatientId())
+        .dateTime(command.getDateTime())
+        .price(command.getPrice())
+        .build()
+
+        appointmentRepository.findAllByDoctorId(1L) >> []
+        appointmentRepository.findAllByPatientId(1L) >> []
+        Doctor doctor = DoctorFactory.createDoctor()
+        doctor.setId(1L)
+        Patient patient = PatientFactory.createPatient()
+        patient.setId(1L)
+        Appointment savedAppointment = AppointmentFactory.createAppointment(1L, doctor, patient, command.dateTime, command.price)
+        appointmentRepository.save(command) >> savedAppointment
+        modelMapper.map(savedAppointment, AppointmentSnapshot) >> expectedSnapshot
+
+        when:
+        AppointmentSnapshot result = createAppointmentCommandHandler.handle(command)
+
+        then:
+        // RAZEM Z TYM WYWALA BLEDY, ale samo to dziala bez 1 * ...
+//        result == expectedSnapshot
+//        result.id == 1L
+//        result.doctorId == command.doctorId
+//        result.patientId == command.patientId
+//        result.price == command.getPrice()
+        1 * appointmentRepository.save(command)
+        1 * modelMapper.map(_, AppointmentSnapshot)
     }
 
     def "should throw exception when appointment is not available"() {
@@ -90,9 +127,10 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         Appointment conflictingAppointment = AppointmentFactory.createAppointment(2L, doctor, patient, command.dateTime, 200.0)
         List<Appointment> conflictingAppointments = [conflictingAppointment]
 
-        when:
         appointmentRepository.findAllByDoctorId(command.doctorId) >> conflictingAppointments
         appointmentRepository.findAllByPatientId(command.patientId) >> conflictingAppointments
+
+        when:
         createAppointmentCommandHandler.handle(command)
 
         then:

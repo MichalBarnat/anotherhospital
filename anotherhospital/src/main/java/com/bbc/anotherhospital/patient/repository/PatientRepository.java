@@ -1,5 +1,6 @@
 package com.bbc.anotherhospital.patient.repository;
 
+import com.bbc.anotherhospital.exceptions.NoGeneratedKeyException;
 import com.bbc.anotherhospital.exceptions.PatientNotFoundException;
 import com.bbc.anotherhospital.patient.Patient;
 import com.bbc.anotherhospital.patient.PatientFactory;
@@ -45,7 +46,7 @@ public class PatientRepository {
         jdbcTemplate.update(sql, params);
     }
 
-    public List<Patient> findAll(CreatePatientCommand command) {
+    public List<Patient> findAll() {
         String sql = "SELECT * FROM patient";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Patient patient = PatientFactory.createPatient();
@@ -61,7 +62,6 @@ public class PatientRepository {
     }
 
     public Patient edit(Long id, UpdatePatientCommand command) {
-        Patient currentPatient = findById(id);
 
         String sql = "UPDATE patient SET name = :name, surname = :surname, email = :email, pesel = :pesel," +
                 " valid_insurance = :validInsurance WHERE id = :id";
@@ -92,13 +92,17 @@ public class PatientRepository {
         params.addValue("validInsurance", command.getValidInsurance());
 
         jdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
-        keyHolder.getKey().longValue();
 
-        return findById(keyHolder.getKey().longValue());
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new NoGeneratedKeyException("Failed to insert patient, no ID obrained.");
+        }
+
+        Long newPatientId = keyHolder.getKey().longValue();
+        return findById(newPatientId);
     }
 
     public Patient editPatrially(Long id, UpdatePatientCommand command) {
-        Patient currentPatient = findById(id);
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);

@@ -22,7 +22,7 @@ class FindAllPatientsQueryHandlerImpl implements FindAllPatientsQueryHandler{
 
     @Override
     public List<PatientSnapshot> handle(CreatePatientCommand command) {
-        return patientRepository.findAll(command).stream()
+        return patientRepository.findAll().stream()
                 .map(app -> modelMapper.map(app, PatientSnapshot.class))
                 .toList();
     }

@@ -38,14 +38,14 @@ public class PatientRepository {
         }
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         String sql = "DELETE FROM patient WHERE id = :id";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         jdbcTemplate.update(sql, params);
     }
 
-    public List<Patient> findAll() {
+    public List<Patient> findAll(CreatePatientCommand command) {
         String sql = "SELECT * FROM patient";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Patient patient = PatientFactory.createPatient();
@@ -95,5 +95,24 @@ public class PatientRepository {
         keyHolder.getKey().longValue();
 
         return findById(keyHolder.getKey().longValue());
+    }
+
+    public Patient editPatrially(Long id, UpdatePatientCommand command) {
+        Patient currentPatient = findById(id);
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("name", command.getName());
+        params.addValue("surname", command.getSurname());
+        params.addValue("email", command.getEmail());
+        params.addValue("pesel", command.getPesel());
+        params.addValue("validInsurance", command.getValidInsurance());
+
+        String sql = "UPDATE patient SET name = :name, surname = :surname, email = :email," +
+                " pesel = :pesel, valid_insurance = :validInsurance";
+
+        jdbcTemplate.update(sql, params);
+
+        return findById(id);
     }
 }

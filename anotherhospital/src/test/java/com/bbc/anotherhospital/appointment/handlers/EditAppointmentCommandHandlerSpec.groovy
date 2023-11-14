@@ -73,8 +73,8 @@ class EditAppointmentCommandHandlerSpec extends Specification {
         AppointmentSnapshot actualSnapshot = editAppointmentHandler.handle(appointmentId, command)
 
         then:
-
         1 * appointmentRepository.edit(appointmentId, command)
+        1 * modelMapper.map(_, AppointmentSnapshot.class)
     }
 
     def "should handle edit command and return appointment snapshot behavior verification2"() {
@@ -104,36 +104,6 @@ class EditAppointmentCommandHandlerSpec extends Specification {
 
         then:
         1 * modelMapper.map(editedAppointment, AppointmentSnapshot.class)
-    }
-
-    def "should handle edit command and return appointment snapshot behavior verification 3 ERROR"() {
-        given:
-        Long appointmentId = 1L
-        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
-
-        Doctor doctor = DoctorFactory.createDoctor()
-        doctor.setId(2L)
-
-        Appointment editedAppointment = AppointmentFactory.createAppointment()
-        editedAppointment.setId(appointmentId)
-        editedAppointment.setDoctor(doctor)
-        editedAppointment.setPrice(100.0)
-
-        AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
-                .id(appointmentId)
-                .doctorId(2L)
-                .price(100.0)
-                .build()
-
-        appointmentRepository.edit(appointmentId, command) >> editedAppointment
-        modelMapper.map(editedAppointment, AppointmentSnapshot) >> expectedSnapshot
-
-        when:
-        AppointmentSnapshot actualSnapshot = editAppointmentHandler.handle(appointmentId, command)
-
-        then:
-        1 * appointmentRepository.edit(appointmentId, command)
-        1 * modelMapper.map(_, AppointmentSnapshot)
     }
 
     def "should throw exception when appointment not found state verification"() {

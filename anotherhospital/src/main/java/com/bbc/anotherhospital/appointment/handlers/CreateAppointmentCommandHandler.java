@@ -34,7 +34,7 @@ class CreateAppointmentCommandHandlerImpl implements  CreateAppointmentCommandHa
         }
     }
 
-    public boolean appointmentIsAvailable(CreateAppointmentCommand command) {
+    private boolean appointmentIsAvailable(CreateAppointmentCommand command) {
         LocalDateTime proposedDateTime = command.getDateTime();
         LocalDateTime proposedEndDateTime = proposedDateTime.plusMinutes(15);
 

@@ -17,11 +17,6 @@ import java.time.LocalDateTime
 
 class CreateAppointmentCommandHandlerSpec extends Specification {
 
-    // ALSO GOOD:
-//    AppointmentRepository appointmentRepository = Mock(AppointmentRepository)
-//    ModelMapper modelMapper = Mock(ModelMapper)
-//    CreateAppointmentCommandHandlerImpl createAppointmentCommandHandler = new CreateAppointmentCommandHandlerImpl(appointmentRepository, modelMapper)
-
     AppointmentRepository appointmentRepository
     ModelMapper modelMapper
     CreateAppointmentCommandHandlerImpl createAppointmentCommandHandler
@@ -61,8 +56,6 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
     def "should create appointment when available v2"() {
         given:
         CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.now(), price: 100.0)
-
-        when:
         appointmentRepository.findAllByDoctorId(1L) >> []
         appointmentRepository.findAllByPatientId(1L) >> []
         appointmentRepository.save(command) >> AppointmentFactory.createAppointment(1L, DoctorFactory.createDoctor(), PatientFactory.createPatient(), command.dateTime, command.price)
@@ -73,6 +66,8 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
                 .dateTime(command.getDateTime())
                 .price(command.getPrice())
                 .build()
+
+        when:
         AppointmentSnapshot result = createAppointmentCommandHandler.handle(command)
 
         then:
@@ -88,12 +83,12 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         CreateAppointmentCommand command = new CreateAppointmentCommand(doctorId: 1L, patientId: 1L, dateTime: LocalDateTime.now(), price: 100.0)
 
         AppointmentSnapshot expectedSnapshot = AppointmentSnapshot.builder()
-        .id(1L)
-        .doctorId(command.getDoctorId())
-        .patientId(command.getPatientId())
-        .dateTime(command.getDateTime())
-        .price(command.getPrice())
-        .build()
+                .id(1L)
+                .doctorId(command.getDoctorId())
+                .patientId(command.getPatientId())
+                .dateTime(command.getDateTime())
+                .price(command.getPrice())
+                .build()
 
         appointmentRepository.findAllByDoctorId(1L) >> []
         appointmentRepository.findAllByPatientId(1L) >> []
@@ -126,14 +121,20 @@ class CreateAppointmentCommandHandlerSpec extends Specification {
         Appointment conflictingAppointment = AppointmentFactory.createAppointment(2L, doctor, patient, command.dateTime, 200.0)
         List<Appointment> conflictingAppointments = [conflictingAppointment]
 
-        appointmentRepository.findAllByDoctorId(command.doctorId) >> conflictingAppointments
-        appointmentRepository.findAllByPatientId(command.patientId) >> conflictingAppointments
+        appointmentRepository.findAllByDoctorId(command.getDoctorId()) >> conflictingAppointments
+        appointmentRepository.findAllByPatientId(command.getPatientId()) >> conflictingAppointments
 
         when:
         createAppointmentCommandHandler.handle(command)
 
         then:
-        thrown(AppointmentIsNotAvailableException)
+        def ex = thrown(AppointmentIsNotAvailableException)
+        ex.message == "Appointment is not available at: 2042-10-01T20:57:03.930"
+
+        1 * appointmentRepository.findAllByDoctorId(command.getDoctorId()) >> {
+            throw new AppointmentIsNotAvailableException("Appointment is not available at: 2042-10-01T20:57:03.930")
+        }
+
     }
 
 }

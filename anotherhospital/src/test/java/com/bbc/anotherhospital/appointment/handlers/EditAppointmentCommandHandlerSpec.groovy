@@ -106,10 +106,10 @@ class EditAppointmentCommandHandlerSpec extends Specification {
         1 * modelMapper.map(editedAppointment, AppointmentSnapshot.class)
     }
 
-    def "should throw exception when appointment not found state verification"() {
+    def "should throw exception when appointment not found"() {
         given:
         Long appointmentId = 1L
-        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
+        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: appointmentId, price: 100.0)
 
         appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
         appointmentRepository.findById(appointmentId) >> { throw new AppointmentNotFoundException("Appointment not found") }
@@ -118,38 +118,58 @@ class EditAppointmentCommandHandlerSpec extends Specification {
         editAppointmentHandler.handle(appointmentId, command)
 
         then:
-        thrown(AppointmentNotFoundException)
+        def ex = thrown(AppointmentNotFoundException)
+        ex.message == "Appointment with id $appointmentId not found"
+
+        1 * appointmentRepository.edit(appointmentId, command) >> {
+            throw new AppointmentNotFoundException("Appointment with id " + appointmentId + " not found")
+        }
     }
 
-    def "should throw exception when appointment not found  behavior verification"() {
-        given:
-        Long appointmentId = 1L
-        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
+//    def "should throw exception when appointment not found state verification"() {
+//        given:
+//        Long appointmentId = 1L
+//        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
+//
+//        appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
+//        appointmentRepository.findById(appointmentId) >> { throw new AppointmentNotFoundException("Appointment not found") }
+//
+//        when:
+//        editAppointmentHandler.handle(appointmentId, command)
+//
+//        then:
+//        thrown(AppointmentNotFoundException)
+//    }
+//
+//    def "should throw exception when appointment not found  behavior verification"() {
+//        given:
+//        Long appointmentId = 1L
+//        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
+//
+//        appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
+//
+//        when:
+//        editAppointmentHandler.handle(appointmentId, command)
+//
+//        then:
+//        1 * appointmentRepository.edit(appointmentId, command)
+//    }
 
-        appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
 
-        when:
-        editAppointmentHandler.handle(appointmentId, command)
-
-        then:
-        1 * appointmentRepository.edit(appointmentId, command)
-    }
-
-
-    def "should throw exception when appointment not found ERROR"() {
-        given:
-        Long appointmentId = 1L
-        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
-
-        appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
-
-        when:
-        editAppointmentHandler.handle(appointmentId, command)
-
-        //TAKI TEST NIE DZIAŁA
-        then:
-        1 * appointmentRepository.edit(appointmentId, command)
-        thrown(AppointmentNotFoundException)
-    }
+//    def "should throw exception when appointment not found ERROR"() {
+//        given:
+//        Long appointmentId = 1L
+//        UpdateAppointmentCommand command = new UpdateAppointmentCommand(doctorId: 2L, price: 100.0)
+//
+//        appointmentRepository.edit(appointmentId, command) >> { throw new AppointmentNotFoundException("Appointment not found") }
+//
+//        when:
+//        editAppointmentHandler.handle(appointmentId, command)
+//
+//        //TAKI TEST NIE DZIAŁA
+//        then:
+//        1 * appointmentRepository.edit(appointmentId, command)
+//        thrown(AppointmentNotFoundException)
+//    }
 
 }

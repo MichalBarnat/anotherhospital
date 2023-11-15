@@ -56,44 +56,7 @@ class FindAppointmentQueryHandlerSpec extends Specification {
         1 * modelMapper.map(_, AppointmentSnapshot)
     }
 
-//    def "should throw AppointmentNotFoundException when appointment do not exist state verification" () {
-//        given:
-//        long nonExistingAppointmentId = 69L
-//        appointmentRepository.findById(nonExistingAppointmentId) >> { throw new AppointmentNotFoundException("Appointment with id " + nonExistingAppointmentId + " not found") }
-//
-//        when:
-//        findAppointmentQueryHandler.handle(nonExistingAppointmentId)
-//
-//        then:
-//        thrown(AppointmentNotFoundException)
-//    }
-//
-//    def "should throw AppointmentNotFoundException when appointment do not exist behavior verification" () {
-//        given:
-//        long nonExistingAppointmentId = 69L
-//        appointmentRepository.findById(nonExistingAppointmentId) >> { throw new AppointmentNotFoundException("Appointment with id " + nonExistingAppointmentId + " not found") }
-//
-//        when:
-//        findAppointmentQueryHandler.handle(nonExistingAppointmentId)
-//
-//        then:
-//        1 * appointmentRepository.findById(nonExistingAppointmentId)
-//    }
-//
-//    def "should throw AppointmentNotFoundException when appointment do not exist ERROR" () {
-//        given:
-//        long nonExistingAppointmentId = 69L
-//        appointmentRepository.findById(nonExistingAppointmentId) >> { throw new AppointmentNotFoundException("Appointment with id " + nonExistingAppointmentId + " not found") }
-//
-//        when:
-//        findAppointmentQueryHandler.handle(nonExistingAppointmentId)
-//
-//        then:
-//        1 * appointmentRepository.findById(69L)
-//        thrown(AppointmentNotFoundException)
-//    }
-
-    def "should throw AppointmentNotFoundException when appointment do not exist PROPER WAY" () {
+    def "should throw AppointmentNotFoundException when appointment do not exist" () {
         given:
         long nonExistingAppointmentId = 69L
 

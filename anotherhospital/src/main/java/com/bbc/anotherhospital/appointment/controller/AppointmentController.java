@@ -41,7 +41,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentSnapshot> getAppointmentById(@PathVariable Long id) {
+    public ResponseEntity<AppointmentSnapshot> findById(@PathVariable Long id) {
         AppointmentSnapshot appointment = findAppointmentQueryHandler.handle(id);
         return ResponseEntity.ok(appointment);
     }

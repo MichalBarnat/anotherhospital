@@ -138,6 +138,10 @@ public class AppointmentRepository {
     }
 
     public void deleteById(Long id) {
+        if(findById(id) == null) {
+            throw new AppointmentNotFoundException("Appointment with id " + id + " not found");
+        }
+
         String sql = "DELETE FROM appointment WHERE id = :id";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);

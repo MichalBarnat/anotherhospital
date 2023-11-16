@@ -1,6 +1,5 @@
 package com.bbc.anotherhospital.appointment.repository
 
-import com.bbc.anotherhospital.TestConfig
 import com.bbc.anotherhospital.appointment.commands.CreateAppointmentCommand
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,7 +19,7 @@ import spock.lang.Specification;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = TestConfig.class)
+//@ContextConfiguration(classes = TestConfig.class)
 class AppointmentControllerIntegrationSpec extends Specification {
 
     @Autowired

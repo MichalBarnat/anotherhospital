@@ -80,20 +80,8 @@ class AppointmentControllerSpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.OK
+        1 * editAppointmentCommandHandler.handle(1L, command)
         //response.body.price == 300.0
-    }
-
-    def "TEST"() {
-        given:
-        def command = new CreateAppointmentCommand(1L, 1L, LocalDateTime.now(), 200.0)
-        controller.save(command)
-
-        when:
-        ResponseEntity<AppointmentSnapshot> response = controller.findById(1L)
-        println response.body.toString()
-        then:
-        response.statusCode == HttpStatus.CREATED
-        //response.body != null
     }
 
 }

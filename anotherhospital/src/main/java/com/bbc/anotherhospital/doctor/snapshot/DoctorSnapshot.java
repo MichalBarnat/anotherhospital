@@ -13,4 +13,5 @@ public class DoctorSnapshot {
     String email;
     Integer rate;
     String pesel;
+    Boolean validInsurance;
 }

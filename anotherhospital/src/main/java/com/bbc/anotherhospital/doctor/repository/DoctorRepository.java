@@ -5,6 +5,7 @@ import com.bbc.anotherhospital.doctor.DoctorFactory;
 import com.bbc.anotherhospital.doctor.commands.CreateDoctorCommand;
 import com.bbc.anotherhospital.doctor.commands.UpdateDoctorCommand;
 import com.bbc.anotherhospital.exceptions.DoctorNotFoundException;
+import com.bbc.anotherhospital.exceptions.NoGeneratedKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -63,8 +64,6 @@ public class DoctorRepository {
     }
 
     public Doctor edit(Long id, UpdateDoctorCommand command) {
-        Doctor currentDoctor = findById(id);
-
         String sql = "UPDATE doctor SET name = :name, surname = :surname, speciality = :speciality, email = :email, rate = :rate, pesel = :pesel," +
                 " valid_insurance = :validInsurance WHERE id = :id";
 
@@ -98,9 +97,32 @@ public class DoctorRepository {
         params.addValue("validInsurance", command.getValidInsurance());
 
         jdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
-        keyHolder.getKey().longValue();
+
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new NoGeneratedKeyException("Failed to insert doctor, no ID obrained.");
+        }
 
         return findById(keyHolder.getKey().longValue());
+    }
+
+    public Doctor editPartially(Long id, UpdateDoctorCommand command){
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("name", command.getName());
+        params.addValue("surname", command.getSurname());
+        params.addValue("speciality", command.getSpeciality());
+        params.addValue("email", command.getEmail());
+        params.addValue("rate", command.getRate());
+        params.addValue("pesel", command.getPesel());
+        params.addValue("validInsurance", command.getValidInsurance());
+
+        String sql = "UPDATE doctor SET name = :name, surname = :surname, speciality = :speciality, email = :email, rate = :rate," +
+                " pesel = :pesel, valid_insurance = :validInsurance";
+
+        jdbcTemplate.update(sql, params);
+
+        return findById(id);
     }
 
 

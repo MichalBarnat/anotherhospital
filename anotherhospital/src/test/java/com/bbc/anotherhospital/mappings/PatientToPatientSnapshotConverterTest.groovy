@@ -1,4 +1,4 @@
-package com.bbc.anotherhospital.mappings.patient
+package com.bbc.anotherhospital.mappings
 
 import com.bbc.anotherhospital.patient.Patient
 import com.bbc.anotherhospital.patient.snapshot.PatientSnapshot

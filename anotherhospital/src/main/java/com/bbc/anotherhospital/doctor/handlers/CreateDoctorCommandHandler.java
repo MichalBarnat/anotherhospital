@@ -14,7 +14,7 @@ public interface CreateDoctorCommandHandler {
 
 @Service
 @RequiredArgsConstructor
-class CreateDoctorCommandHandleImpl implements CreateDoctorCommandHandler {
+class CreateDoctorCommandHandlerImpl implements CreateDoctorCommandHandler {
 
     private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;

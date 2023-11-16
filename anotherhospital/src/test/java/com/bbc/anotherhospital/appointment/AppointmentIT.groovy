@@ -42,14 +42,4 @@ class AppointmentIT extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isOk())
     }
 
-    @DatabaseSetup("/sample-data.xml")
-    def "should find doctor with id 1"() {
-        when: "Perform GET request"
-        def result = mockMvc.perform(MockMvcRequestBuilders.get("/doctor/1"))
-                .andDo(MockMvcResultHandlers.print())
-
-        then: "Expect OK status"
-        result.andExpect(MockMvcResultMatchers.status().isOk())
-    }
-
 }

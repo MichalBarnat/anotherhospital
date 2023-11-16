@@ -1,5 +1,4 @@
 <dataset>
-    <!-- Sample Doctor data -->
     <doctor id="1" name="John" surname="Doe" speciality="Cardiology" email="johndoe@example.com" rate="5" pesel="12345678901" />
     <doctor id="2" name="Alice" surname="Johnson" speciality="Dermatology" email="alicejohnson@example.com" rate="4.5" pesel="23456789023" />
     <doctor id="3" name="Michael" surname="Smith" speciality="Orthopedics" email="michaelsmith@example.com" rate="4.8" pesel="34567890134" />
@@ -21,7 +20,6 @@
     <doctor id="19" name="Alexander" surname="Adams" speciality="Internal Medicine" email="alexanderadams@example.com" rate="4.7" pesel="90123456791" />
     <doctor id="20" name="Sofia" surname="Scott" speciality="Gynecology" email="sofiascott@example.com" rate="4.6" pesel="01234567812" />
 
-    <!-- Sample Patient data -->
     <patient id="1" name="Jane" surname="Smith" email="janesmith@example.com" pesel="23456789012" />
     <patient id="2" name="Robert" surname="Johnson" email="robertjohnson@example.com" pesel="34567890123" />
     <patient id="3" name="Mary" surname="Williams" email="marywilliams@example.com" pesel="45678901234" />
@@ -43,7 +41,6 @@
     <patient id="19" name="Thomas" surname="Adams" email="thomasadams@example.com" pesel="67234567890" />
     <patient id="20" name="Jessica" surname="Scott" email="jessicascott@example.com" pesel="98345678901" />
 
-    <!-- Sample Appointment data -->
     <appointment id="1" doctor_id="1" patient_id="1" date_time="2023-01-01 10:00:00" price="105.0" />
     <appointment id="2" doctor_id="1" patient_id="2" date_time="2023-01-02 14:30:00" price="120.0" />
     <appointment id="3" doctor_id="2" patient_id="3" date_time="2023-01-03 09:45:00" price="95.0" />

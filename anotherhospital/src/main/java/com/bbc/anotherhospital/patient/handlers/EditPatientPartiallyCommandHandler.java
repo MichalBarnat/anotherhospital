@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-public interface EditPartiallyCommandHandler {
+public interface EditPatientPartiallyCommandHandler {
     PatientSnapshot handler(Long id, UpdatePatientCommand command);
 }
 @Service
 @RequiredArgsConstructor
-class EditPartiallyCommandHanlderImpl implements EditPartiallyCommandHandler{
+class EditPatientPartiallyCommandHandlerImpl implements EditPatientPartiallyCommandHandler {
 
     private final PatientRepository patientRepository;
     private final ModelMapper modelMapper;

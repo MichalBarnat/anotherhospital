@@ -1,0 +1,67 @@
+<dataset>
+    <!-- Sample Doctor data -->
+    <doctor id="1" name="John" surname="Doe" speciality="Cardiology" email="johndoe@example.com" rate="5" pesel="12345678901" />
+    <doctor id="2" name="Alice" surname="Johnson" speciality="Dermatology" email="alicejohnson@example.com" rate="4.5" pesel="23456789023" />
+    <doctor id="3" name="Michael" surname="Smith" speciality="Orthopedics" email="michaelsmith@example.com" rate="4.8" pesel="34567890134" />
+    <doctor id="4" name="Emily" surname="Wilson" speciality="Ophthalmology" email="emilywilson@example.com" rate="4.9" pesel="45678901245" />
+    <doctor id="5" name="David" surname="Brown" speciality="Pediatrics" email="davidbrown@example.com" rate="4.7" pesel="56789012356" />
+    <doctor id="6" name="Sarah" surname="Davis" speciality="Neurology" email="sarahdavis@example.com" rate="4.6" pesel="67890123467" />
+    <doctor id="7" name="Matthew" surname="Taylor" speciality="Dermatology" email="matthewtaylor@example.com" rate="4.8" pesel="78901234578" />
+    <doctor id="8" name="Olivia" surname="Miller" speciality="Gynecology" email="oliviamiller@example.com" rate="4.9" pesel="89012345689" />
+    <doctor id="9" name="James" surname="Anderson" speciality="Pediatrics" email="jamesanderson@example.com" rate="4.5" pesel="90123456790" />
+    <doctor id="10" name="Sophia" surname="White" speciality="Dentistry" email="sophiawhite@example.com" rate="4.7" pesel="01234567801" />
+    <doctor id="11" name="Daniel" surname="Martin" speciality="Psychiatry" email="danielmartin@example.com" rate="4.6" pesel="12345678912" />
+    <doctor id="12" name="Eveline" surname="Thompson" speciality="Urology" email="ev@example.com" rate="4.8" pesel="23456789029" />
+    <doctor id="13" name="Liam" surname="Clark" speciality="Radiology" email="liamclark@example.com" rate="4.9" pesel="34567890138" />
+    <doctor id="14" name="Mia" surname="Lewis" speciality="Oncology" email="mialewis@example.com" rate="4.7" pesel="45678901247" />
+    <doctor id="15" name="Benjamin" surname="Harris" speciality="Dermatology" email="benjaminharris@example.com" rate="4.6" pesel="56789012358" />
+    <doctor id="16" name="Evelyn" surname="Young" speciality="Cardiology" email="evelynyoung@example.com" rate="4.8" pesel="67890123469" />
+    <doctor id="17" name="William" surname="Walker" speciality="Pediatrics" email="williamwalker@example.com" rate="4.9" pesel="78901234579" />
+    <doctor id="18" name="Harper" surname="Lee" speciality="Neurology" email="harperlee@example.com" rate="4.5" pesel="89012345680" />
+    <doctor id="19" name="Alexander" surname="Adams" speciality="Internal Medicine" email="alexanderadams@example.com" rate="4.7" pesel="90123456791" />
+    <doctor id="20" name="Sofia" surname="Scott" speciality="Gynecology" email="sofiascott@example.com" rate="4.6" pesel="01234567812" />
+
+    <!-- Sample Patient data -->
+    <patient id="1" name="Jane" surname="Smith" email="janesmith@example.com" pesel="23456789012" />
+    <patient id="2" name="Robert" surname="Johnson" email="robertjohnson@example.com" pesel="34567890123" />
+    <patient id="3" name="Mary" surname="Williams" email="marywilliams@example.com" pesel="45678901234" />
+    <patient id="4" name="William" surname="Brown" email="williambrown@example.com" pesel="56789012345" />
+    <patient id="5" name="Patricia" surname="Jones" email="patriciajones@example.com" pesel="67890123456" />
+    <patient id="6" name="Linda" surname="Davis" email="lindadavis@example.com" pesel="78901234567" />
+    <patient id="7" name="James" surname="Miller" email="jamesmiller@example.com" pesel="89012345678" />
+    <patient id="8" name="Elizabeth" surname="Wilson" email="elizabethwilson@example.com" pesel="90123456789" />
+    <patient id="9" name="John" surname="Taylor" email="johntaylor@example.com" pesel="01234567890" />
+    <patient id="10" name="Susan" surname="Anderson" email="susananderson@example.com" pesel="12345678901" />
+    <patient id="11" name="David" surname="White" email="davidwhite@example.com" pesel="23456729012" />
+    <patient id="12" name="Karen" surname="Martin" email="karenmartin@example.com" pesel="66567890123" />
+    <patient id="13" name="Michael" surname="Thompson" email="michaelthompson@example.com" pesel="99678901234" />
+    <patient id="14" name="Sarah" surname="Clark" email="sarahclark@example.com" pesel="92789012345" />
+    <patient id="15" name="Richard" surname="Lewis" email="richardlewis@example.com" pesel="97890123456" />
+    <patient id="16" name="Barbara" surname="Harris" email="barbaraharris@example.com" pesel="88901234567" />
+    <patient id="17" name="Joseph" surname="Walker" email="josephwalker@example.com" pesel="81012345678" />
+    <patient id="18" name="Nancy" surname="Lee" email="nancylee@example.com" pesel="92523456789" />
+    <patient id="19" name="Thomas" surname="Adams" email="thomasadams@example.com" pesel="67234567890" />
+    <patient id="20" name="Jessica" surname="Scott" email="jessicascott@example.com" pesel="98345678901" />
+
+    <!-- Sample Appointment data -->
+    <appointment id="1" doctor_id="1" patient_id="1" date_time="2023-01-01 10:00:00" price="105.0" />
+    <appointment id="2" doctor_id="1" patient_id="2" date_time="2023-01-02 14:30:00" price="120.0" />
+    <appointment id="3" doctor_id="2" patient_id="3" date_time="2023-01-03 09:45:00" price="95.0" />
+    <appointment id="4" doctor_id="3" patient_id="4" date_time="2023-01-04 11:15:00" price="110.0" />
+    <appointment id="5" doctor_id="4" patient_id="5" date_time="2023-01-05 16:00:00" price="130.0" />
+    <appointment id="6" doctor_id="5" patient_id="6" date_time="2023-01-06 13:20:00" price="115.0" />
+    <appointment id="7" doctor_id="6" patient_id="7" date_time="2023-01-07 10:30:00" price="125.0" />
+    <appointment id="8" doctor_id="7" patient_id="8" date_time="2023-01-08 15:45:00" price="135.0" />
+    <appointment id="9" doctor_id="8" patient_id="9" date_time="2023-01-09 12:00:00" price="105.0" />
+    <appointment id="10" doctor_id="9" patient_id="10" date_time="2023-01-10 14:15:00" price="115.0" />
+    <appointment id="11" doctor_id="10" patient_id="11" date_time="2023-01-11 16:30:00" price="125.0" />
+    <appointment id="12" doctor_id="11" patient_id="12" date_time="2023-01-12 09:00:00" price="95.0" />
+    <appointment id="13" doctor_id="12" patient_id="13" date_time="2023-01-13 10:45:00" price="110.0" />
+    <appointment id="14" doctor_id="13" patient_id="14" date_time="2023-01-14 11:30:00" price="120.0" />
+    <appointment id="15" doctor_id="14" patient_id="15" date_time="2023-01-15 15:20:00" price="130.0" />
+    <appointment id="16" doctor_id="15" patient_id="16" date_time="2023-01-16 14:00:00" price="125.0" />
+    <appointment id="17" doctor_id="16" patient_id="17" date_time="2023-01-17 12:30:00" price="135.0" />
+    <appointment id="18" doctor_id="17" patient_id="18" date_time="2023-01-18 09:30:00" price="105.0" />
+    <appointment id="19" doctor_id="18" patient_id="19" date_time="2023-01-19 13:45:00" price="115.0" />
+    <appointment id="20" doctor_id="19" patient_id="20" date_time="2023-01-20 16:15:00" price="125.0" />
+</dataset>

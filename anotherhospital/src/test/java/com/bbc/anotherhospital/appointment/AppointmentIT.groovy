@@ -27,7 +27,7 @@ class AppointmentIT extends Specification {
     MockMvc mockMvc
 
 
-    @DatabaseSetup("/appointment-data.xml")
+    @DatabaseSetup("/sample-data.xml")
     def "should find appointment with id 1"() {
         when: "Perform GET request"
         def result = mockMvc.perform(MockMvcRequestBuilders.get("/appointment/1"))
@@ -37,6 +37,16 @@ class AppointmentIT extends Specification {
                 .andExpect(MockMvcResultMatchers.jsonPath("patientId").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("dateTime").value("2023-01-01T10:00:00"))
                 .andExpect(MockMvcResultMatchers.jsonPath("price").value(105.0))
+
+        then: "Expect OK status"
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+    }
+
+    @DatabaseSetup("/sample-data.xml")
+    def "should find doctor with id 1"() {
+        when: "Perform GET request"
+        def result = mockMvc.perform(MockMvcRequestBuilders.get("/doctor/1"))
+                .andDo(MockMvcResultHandlers.print())
 
         then: "Expect OK status"
         result.andExpect(MockMvcResultMatchers.status().isOk())

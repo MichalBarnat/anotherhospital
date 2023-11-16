@@ -5,7 +5,8 @@ CREATE TABLE doctor (
     speciality VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     rate INTEGER,
-    pesel VARCHAR(11) UNIQUE
+    pesel VARCHAR(11) UNIQUE,
+    valid_insurance BOOLEAN
 );
 
 CREATE TABLE patient (

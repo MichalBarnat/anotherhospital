@@ -1,3 +1,10 @@
 <dataset>
-    <appointment id="1" doctor_id="123" patient_id="456" date_time="2023-01-01T10:00:00" price="100.0" />
+    <!-- Sample Doctor data -->
+    <doctor id="1" name="John" surname="Doe" speciality="Cardiology" email="johndoe@example.com" rate="5" pesel="12345678901" />
+
+    <!-- Sample Patient data -->
+    <patient id="1" name="Jane" surname="Smith" email="janesmith@example.com" pesel="23456789012" />
+
+    <!-- Sample Appointment data -->
+    <appointment id="1" doctor_id="1" patient_id="1" date_time="2023-01-01 10:00:00" price="105.0" />
 </dataset>

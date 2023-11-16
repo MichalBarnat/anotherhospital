@@ -10,7 +10,6 @@ public class AnotherhospitalApplication {
 		SpringApplication.run(AnotherhospitalApplication.class, args);
 	}
 
-
 	// 26.10.2023
 	// Doctor - Krystian
 	// Patient - Mateusz

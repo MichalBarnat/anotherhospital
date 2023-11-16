@@ -27,7 +27,6 @@ class AppointmentIT extends Specification {
     @Autowired
     MockMvc mockMvc
 
-
     @DatabaseSetup("/sample-data.xml")
     def "should find appointment with id 1"() {
         when: "Perform GET request"

@@ -20,7 +20,6 @@ class AppointmentIT extends Specification {
     def "Test GET Request"() {
         when: "Perform GET request"
         def result = mockMvc.perform(MockMvcRequestBuilders.get("/appointment/1"))
-        println result.toString()
 
         then: "Expect OK status"
         result.andExpect(MockMvcResultMatchers.status().isOk())
